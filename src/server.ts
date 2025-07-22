@@ -16,7 +16,6 @@ app.use(cors({
     exposedHeaders: ['user'],
     credentials: true,
 }));
-app.options('*', cors());
 app.use(express.json());
 
 const createConfig: Handler = async (req: Request, res: Response): Promise<void> => {
@@ -47,8 +46,8 @@ app.post('/config', createConfig);
 /* start server                                                       */
 /* ------------------------------------------------------------------ */
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const PORT = Number(process.env.PORT) || 3000;
+app.listen(PORT, '0.0.0.0', () => {
     /* eslint-disable no-console */
-    console.log(`🚀  API ready on http://localhost:${PORT}`);
+    console.log(`🚀  API ready on http://0.0.0.0:${PORT}`);
 });

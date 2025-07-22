@@ -19,5 +19,6 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 
 ENV NODE_ENV=production
-EXPOSE 3000
+ENV PORT=8080
+EXPOSE 8080
 CMD ["node", "dist/server.js"]
