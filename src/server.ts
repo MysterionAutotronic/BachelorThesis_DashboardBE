@@ -16,6 +16,7 @@ app.use(cors({
     exposedHeaders: ['user'],
     credentials: true,
 }));
+
 app.use(express.json());
 
 const createConfig: Handler = async (req: Request, res: Response): Promise<void> => {
