@@ -10,14 +10,14 @@ import cors from 'cors';
 
 const app = express();
 app.use(express.json());
-app.use(
-    cors({
-        origin: '*',
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        exposedHeaders: ['user'],
-        allowedHeaders: ['Content-Type', 'user'],
-    })
-);
+app.use(cors({
+    origin: 'http://dashboard.local:8080',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'user'],
+    exposedHeaders: ['user'],
+    credentials: true,
+}));
+app.options('*', cors());
 
 const createConfig: Handler = async (req: Request, res: Response): Promise<void> => {
     const user: string | undefined = req.get('user');
