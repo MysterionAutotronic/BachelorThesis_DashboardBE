@@ -23,13 +23,13 @@ const createConfig: Handler = async (req: Request, res: Response): Promise<void>
     const user: string | undefined = req.get('user');
     if (!user) {
         console.error('user not provided');
-        res.status(400);
+        res.status(400).send('user not provided');
         return;
     }
     const parsed = ConfigSchema.safeParse(req.body);
     if (!parsed.success) {
         console.error('JSON does not fit schema')
-        res.status(400);
+        res.status(400).send('JSON does not fit schema');
         return;
     }
     try {
