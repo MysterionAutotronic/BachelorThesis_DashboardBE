@@ -42,10 +42,11 @@ const createConfig: Handler = async (req: Request, res: Response): Promise<void>
         }
         console.log(`Attempting to write config for user: ${user}`);
         writeFileSync(filePath, JSON.stringify(parsed.data),'utf-8');
-        res.status(200);
+        console.log(`Config written successfully for user: ${user}`);
+        res.status(200).send('Config written successfully');
     } catch (e) {
         console.error('[config] write failed for user: ', user, e);
-        res.status(500);
+        res.status(500).send('Internal Server Error');
     }
 }
 
