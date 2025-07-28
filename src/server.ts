@@ -1,5 +1,5 @@
 import express, { Handler, Request, Response } from 'express';
-import { mkdirSync, writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync, existsSync } from 'fs';
 import { setUserIp } from './redis';
 import { ConfigSchema } from '@mystiker123/config-schema';
 import cors from 'cors';
@@ -35,11 +35,16 @@ const createConfig: Handler = async (req: Request, res: Response): Promise<void>
     }
     try {
         const filePath = `data/${user}/config.json`;
-        mkdirSync(dirname(filePath), { recursive: true });
+        console.log(`Attempting to create config directory for user: ${user}`);
+        if (!existsSync(dirname(filePath))) {
+            console.log(`Creating directory for user: ${user}`);
+            mkdirSync(dirname(filePath), { recursive: true });
+        }
+        console.log(`Attempting to write config for user: ${user}`);
         writeFileSync(filePath, JSON.stringify(parsed.data),'utf-8');
         res.status(200);
     } catch (e) {
-        console.error('[config] write failed');
+        console.error('[config] write failed for user: ', user, e);
         res.status(500);
     }
 }
