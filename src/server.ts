@@ -1,8 +1,9 @@
 import express, { Handler, Request, Response } from 'express';
-import { writeFileSync } from 'fs';
+import { mkdirSync, writeFileSync } from 'fs';
 import { setUserIp } from './redis';
 import { ConfigSchema } from '@mystiker123/config-schema';
 import cors from 'cors';
+import { dirname } from 'path';
 
 /* ------------------------------------------------------------------ */
 /* express app                                                        */
@@ -33,7 +34,9 @@ const createConfig: Handler = async (req: Request, res: Response): Promise<void>
         return;
     }
     try {
-        writeFileSync(`data/${user}/config.json`, JSON.stringify(parsed.data),'utf-8');
+        const filePath = `data/${user}/config.json`;
+        mkdirSync(dirname(filePath), { recursive: true });
+        writeFileSync(filePath, JSON.stringify(parsed.data),'utf-8');
         res.status(200);
     } catch (e) {
         console.error('[config] write failed');
